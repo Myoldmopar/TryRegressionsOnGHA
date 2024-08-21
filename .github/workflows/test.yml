@@ -1,0 +1,40 @@
+name: Mac Build
+
+on:
+  push
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build_and_test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: macos-12
+          - os: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Build Directory
+        run: cmake -E make_directory ./build/
+
+      - name: Configure CMake
+        working-directory: ./build
+        shell: bash
+        run: |
+          cmake -G Ninja ../
+
+      - name: Build Default
+        working-directory: ./build
+        shell: bash
+        run: ninja
+
+      - name: Run Tests
+        working-directory: ./build
+        shell: bash
+        run: ctest
+
+    # TODO: Add regression builds, as well as use GHA caching to store baseline branch results for efficiency
