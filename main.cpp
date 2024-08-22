@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <thread>
 
 int main()
 {
@@ -7,6 +8,8 @@ int main()
     std::ofstream MyFile("eplusout.txt");
     MyFile << "E+ Output";
     MyFile.close();
+    const int MAX_N = static_cast<int>(std::thread::hardware_concurrency());
+    std::cout << "Found this for MAX_N: " << MAX_N << std::endl;
     return 0;
 }
 
