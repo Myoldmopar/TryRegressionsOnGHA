@@ -54,7 +54,16 @@ jobs:
 
       - name: Try a warning
         if: ${{ matrix.os == 'windows-2019' }}
-        run: for run in {1..20}; do echo "::warning file=main.cpp::ESO Small Diffs"; done
+        run: |
+          echo "::warning file=main.cpp::ESO Small Diffs"
+          echo "::warning file=main.cpp,line=8::ESO Small Diffs"
+          echo "::warning file=main.cpp::ESO Small Diffs"
+          echo "::warning file=main.cpp::ESO Small Diffs"
+          echo "::warning file=main.cpp::ESO Small Diffs"
+          echo "::warning file=main.cpp,line=10::ESO Small Diffs"
+          echo "::warning file=main.cpp::ESO Small Diffs"
+          echo "::warning file=main.cpp::ESO Small Diffs"
+          echo "::warning file=main.cpp::ESO Small Diffs"
 
       - name: Try an error
         run: echo "::error file=main.cpp,line=8::ESO Big Diffs"
