@@ -22,7 +22,7 @@ jobs:
           - os: ubuntu-latest
             generator: "Unix Makefiles"
             nproc: 4
-          - os: windows-latest
+          - os: windows-2019
             generator: "Visual Studio 16 2019"
             nproc: 4
 
