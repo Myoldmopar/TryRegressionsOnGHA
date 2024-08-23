@@ -46,7 +46,7 @@ jobs:
 
       - name: Configure CMake
         working-directory: ./build
-        run: cmake -G ${{ matrix.generator }} -DBUILD_TYPE=Release ../
+        run: cmake -G "${{ matrix.generator }}" -DBUILD_TYPE=Release ../
 
       - name: Build On Linux-y
         if: ${{ runner.os != 'Windows' }}
