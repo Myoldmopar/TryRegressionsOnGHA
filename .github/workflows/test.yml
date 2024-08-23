@@ -53,7 +53,8 @@ jobs:
         run: ctest -C Release
 
       - name: Try a warning
-        run: echo "::warning file=main.cpp::ESO Small Diffs"
+        if: ${{ matrix.os == 'windows-2019' }}
+        run: for run in {1..20}; do echo "::warning file=main.cpp::ESO Small Diffs"; done
 
       - name: Try an error
         run: echo "::error file=main.cpp,line=8::ESO Big Diffs"
