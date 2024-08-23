@@ -31,7 +31,7 @@ jobs:
 
       - name: Install Dependencies for Linux
         if: ${{ runner.os == 'Linux' }}
-        run: sudo apt-get install ninja
+        run: sudo apt-get install ninja-build
 
       - name: Install Dependencies for Windows
         if: ${{ runner.os == 'Windows' }}
