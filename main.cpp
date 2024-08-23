@@ -36,4 +36,6 @@ int main()
  *  Ruby entirely.
  *  My maintenance burden of the CI machines
  *  The CI machines themselves
+ *  All the extra regression code inside our E+ repo, including cmake vars
+ *  the RunRegression.cmake macro stuff and extra bulk in the RunSimulation.cmake file
 */

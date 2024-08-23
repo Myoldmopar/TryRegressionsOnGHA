@@ -4,6 +4,7 @@ on:
   push
 
 env:
+  shell: bash
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -13,37 +14,58 @@ jobs:
       matrix:
         include:
           - os: macos-12
+            generator: "Ninja"
           - os: macos-14
+            generator: "Ninja"
+          - os: ubuntu-latest
+            generator: "Ninja"
+          - os: windows-latest
+            generator: "Visual Studio 16 2019"
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Ninja
-        shell: bash
+      - name: Install Dependencies for Mac
+        if: ${{ runner.os == 'macOS' }}
         run: brew update && brew install ninja
+
+      - name: Install Dependencies for Linux
+        if: ${{ runner.os == 'Linux' }}
+        run: sudo apt-get install ninja
+
+      - name: Install Dependencies for Windows
+        if: ${{ runner.os == 'Windows' }}
+        run: choco install cmake --version=3.28.4 --installargs 'ADD_CMAKE_TO_PATH=System'
 
       - name: Create Build Directory
         run: cmake -E make_directory ./build/
 
+      - name: Assign number of processors
+        run: echo "N=$(nproc 2>/dev/null || sysctl -n hw.logicalcpu)" >> $GITHUB_ENV
+
+      - name: Check processor variable
+        run: echo "Num processors ${N}"
+
       - name: Configure CMake
         working-directory: ./build
-        shell: bash
-        run: |
-          cmake -G Ninja ../
+        run: cmake -G ${{ matrix.generator }} ../
 
-      - name: Build Default
+      - name: Build On Linux-y
+        if: ${{ runner.os != 'Windows' }}
         working-directory: ./build
-        shell: bash
         run: ninja
+
+      - name: Build on Windows
+        if: ${{ runner.os == 'Windows' }}
+        working-directory: ./build
+        run: cmake --build . -j ${N} --config Release --target all
 
       - name: Quick run
         working-directory: ./build
-        shell: bash
         run: ./RegressionsOnGHA
 
       - name: Run Tests
         working-directory: ./build
-        shell: bash
         run: ctest
 
     # TODO: Add regression builds, as well as use GHA caching to store baseline branch results for efficiency
