@@ -52,5 +52,8 @@ jobs:
         working-directory: ./build
         run: ctest -C Release
 
-      - name: Try some warnings and such
-        run: echo "::warning file=testfiles/ZoneCoupledKivaConvection::ESO Small Diffs"
+      - name: Try a warning
+        run: echo "::warning file=main.cpp::ESO Small Diffs"
+
+      - name: Try an error
+        run: echo "::error file=main.cpp,line=8::ESO Big Diffs"
