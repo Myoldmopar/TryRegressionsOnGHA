@@ -66,4 +66,7 @@ jobs:
           echo "::warning file=main.cpp::ESO Small Diffs"
 
       - name: Try an error
-        run: echo "::error file=main.cpp,line=8::ESO Big Diffs"
+        if: ${{ matrix.os == 'macos-12' }}
+        run: |
+          echo "::error file=main.cpp,line=8::ESO Big Diffs"
+          exit 1
