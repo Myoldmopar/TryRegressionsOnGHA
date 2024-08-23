@@ -51,3 +51,6 @@ jobs:
       - name: Run Tests
         working-directory: ./build
         run: ctest -C Release
+
+      - name: Try some warnings and such
+        run: echo "::warning file=testfiles/ZoneCoupledKivaConvection::ESO Small Diffs"
