@@ -37,6 +37,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
 
       - name: Create Build Directory
         run: cmake -E make_directory ./build/
@@ -52,6 +53,20 @@ jobs:
       - name: Run Tests
         working-directory: ./build
         run: ctest -C Release
+
+      - name: Generate Regression Bundle
+        working-directory: ./build
+        run: python build_regression_bundle.py
+
+      - uses: vimtor/action-zip@v1.2
+        with:
+          files: ./build/regressions/
+          dest: "regressions-${{ matrix.os }}.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: "regressions-${{ matrix.os }}"
+          path: "${{ github.workspace }}/build/regressions/regressions-${{ matrix.os }}.zip"
 
       - name: Try a warning
         if: ${{ matrix.os == 'windows-2019' }}
