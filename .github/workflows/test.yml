@@ -14,26 +14,26 @@ jobs:
       fail-fast: false
       matrix:
         include:
-#          - os: macos-12
-#            generator: "Unix Makefiles"
-#            nproc: 3
-#            build_target: all
-#          - os: macos-14
-#            generator: "Unix Makefiles"
-#            nproc: 3
-#            build_target: all
+          - os: macos-12
+            generator: "Unix Makefiles"
+            nproc: 3
+            build_target: all
+          - os: macos-14
+            generator: "Unix Makefiles"
+            nproc: 3
+            build_target: all
           - os: ubuntu-latest
             generator: "Unix Makefiles"
             nproc: 4
             build_target: all
-#          - os: windows-2019
-#            generator: "Visual Studio 16 2019"
-#            nproc: 4
-#            build_target: ALL_BUILD
-#          - os: windows-2022
-#            generator: "Visual Studio 17 2022"
-#            nproc: 4
-#            build_target: ALL_BUILD
+          - os: windows-2019
+            generator: "Visual Studio 16 2019"
+            nproc: 4
+            build_target: ALL_BUILD
+          - os: windows-2022
+            generator: "Visual Studio 17 2022"
+            nproc: 4
+            build_target: ALL_BUILD
 
     steps:
       - uses: actions/checkout@v4
@@ -62,13 +62,10 @@ jobs:
           files: ./build/regressions/
           dest: "regressions-${{ matrix.os }}.zip"
 
-#      - uses: lhotari/action-upterm@v1
-
       - uses: actions/upload-artifact@v4
         with:
           name: "regressions-${{ matrix.os }}"
           path: "${{ github.workspace }}/build/regressions"
-          # path: "${{ github.workspace }}/regressions-${{ matrix.os }}.zip"
 
       - name: Try a warning
         if: ${{ matrix.os == 'windows-2019' }}
