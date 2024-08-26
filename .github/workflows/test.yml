@@ -60,7 +60,6 @@ jobs:
         if: always()
         id: regressions
         run: python build_regression_bundle.py ${{ matrix.os }}
-        continue-on-error: true
 
       - uses: actions/upload-artifact@v4
         if: always() && steps.regressions.outcome == 'failure'
@@ -91,6 +90,10 @@ jobs:
           echo "::warning file=main.cpp::ESO Small Diffs"
           echo "::warning file=main.cpp::ESO Small Diffs"
           echo "::warning file=main.cpp::ESO Small Diffs"
+
+      - name: Report Failure if Tests or Regressions Failed
+        if: always() && steps.test.outcome == 'failure' && steps.regressions.outcome == 'failure'
+        run: exit 1
 
 #      - name: Try an error
 #        if: ${{ matrix.os == 'macos-12' }}
