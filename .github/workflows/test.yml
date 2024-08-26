@@ -9,7 +9,6 @@ env:
 jobs:
   build_and_test:
     runs-on: ${{ matrix.os }}
-    continue-on-error: true  # careful, we have to make sure to
     permissions:
       pull-requests: write
     strategy:
@@ -56,10 +55,12 @@ jobs:
         working-directory: ./build
         id: test
         run: ctest -C Release
+        continue-on-error: true
 
       - name: Generate Regression Bundle
         id: regressions
         run: python build_regression_bundle.py ${{ matrix.os }}
+        continue-on-error: true
 
       - uses: actions/upload-artifact@v4
         if: steps.regressions.outcome == 'failure'
