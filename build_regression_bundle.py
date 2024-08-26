@@ -8,3 +8,5 @@ with open('build/regressions/index.html', 'w') as f:
 if argv[1] == 'macos-14':
     print("Regressions encountered!  They will be uploaded as an artifact on GitHub Actions")
     exit(1)
+
+print("No regressions found, great!")
