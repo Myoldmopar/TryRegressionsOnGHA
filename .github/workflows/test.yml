@@ -56,14 +56,18 @@ jobs:
         run: ctest -C Release
 
       - name: Generate Regression Bundle
-        run: python build_regression_bundle.py
+        id: regressions
+        run: python build_regression_bundle.py ${{ matrix.os }}
+        continue-on-error: true
 
       - uses: actions/upload-artifact@v4
+        if: steps.regressions.outcome == 'failure'
         with:
           name: "regressions-${{ matrix.os }}"
           path: "${{ github.workspace }}/build/regressions"
 
       - uses: actions/github-script@v7
+        if: steps.regressions.outcome == 'failure'
         with:
           script: |
             github.rest.issues.createComment({
