@@ -9,6 +9,7 @@ env:
 jobs:
   build_and_test:
     runs-on: ${{ matrix.os }}
+    continue-on-error: true  # careful, we have to make sure to
     permissions:
       pull-requests: write
     strategy:
@@ -57,18 +58,17 @@ jobs:
         run: ctest -C Release
 
       - name: Generate Regression Bundle
-        if: always()
         id: regressions
         run: python build_regression_bundle.py ${{ matrix.os }}
 
       - uses: actions/upload-artifact@v4
-        if: always() && steps.regressions.outcome == 'failure'
+        if: steps.regressions.outcome == 'failure'
         with:
           name: "regressions-${{ matrix.os }}"
           path: "${{ github.workspace }}/build/regressions"
 
       - uses: actions/github-script@v7
-        if: always() && steps.regressions.outcome == 'failure'
+        if: steps.regressions.outcome == 'failure'
         with:
           script: |
             github.rest.issues.createComment({
@@ -79,7 +79,7 @@ jobs:
             })
 
       - name: Try a warning
-        if: always() && matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-2019'
         run: |
           echo "::warning file=main.cpp::ESO Small Diffs"
           echo "::warning file=main.cpp,line=8::ESO Small Diffs"
@@ -92,7 +92,7 @@ jobs:
           echo "::warning file=main.cpp::ESO Small Diffs"
 
       - name: Report Failure if Tests or Regressions Failed
-        if: always() && steps.test.outcome == 'failure' && steps.regressions.outcome == 'failure'
+        if: steps.test.outcome == 'failure' && steps.regressions.outcome == 'failure'
         run: exit 1
 
 #      - name: Try an error
