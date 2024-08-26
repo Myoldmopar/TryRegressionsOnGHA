@@ -68,9 +68,9 @@ jobs:
         with:
           script: |
             github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+              issue_number: 1,
+              owner: "Myoldmopar",
+              repo: "TryRegressionsOnGHA",
               body: "Diffs encountered on build ${{ matrix.os }}"
             })
 
