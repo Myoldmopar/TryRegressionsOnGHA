@@ -12,6 +12,13 @@ file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles")  # build/testfiles
 file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/1ZoneUncontrolled")  # build/testfiles
 file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/5ZoneAirCooled")  # build/testfiles
 
+if (WIN32)
+add_test(
+        NAME TestRegressionsOnGHA0
+        COMMAND "Hellllo"
+        WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/testfiles/1ZoneUncontrolled"
+)
+endif()
 add_test(
         NAME TestRegressionsOnGHA1
         COMMAND RegressionsOnGHA
