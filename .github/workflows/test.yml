@@ -10,6 +10,8 @@ env:
 jobs:
   build_and_test:
     runs-on: ${{ matrix.os }}
+    permissions:
+      pull-requests: write
     strategy:
       fail-fast: false
       matrix:
@@ -57,15 +59,20 @@ jobs:
       - name: Generate Regression Bundle
         run: python build_regression_bundle.py
 
-      - uses: vimtor/action-zip@v1.2
-        with:
-          files: ./build/regressions/
-          dest: "regressions-${{ matrix.os }}.zip"
-
       - uses: actions/upload-artifact@v4
         with:
           name: "regressions-${{ matrix.os }}"
           path: "${{ github.workspace }}/build/regressions"
+
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Diffs encountered on build ${{ matrix.os }}"
+            })
 
       - name: Try a warning
         if: ${{ matrix.os == 'windows-2019' }}
@@ -80,8 +87,8 @@ jobs:
           echo "::warning file=main.cpp::ESO Small Diffs"
           echo "::warning file=main.cpp::ESO Small Diffs"
 
-      - name: Try an error
-        if: ${{ matrix.os == 'macos-12' }}
-        run: |
-          echo "::error file=main.cpp,line=8::ESO Big Diffs"
-          exit 1
+#      - name: Try an error
+#        if: ${{ matrix.os == 'macos-12' }}
+#        run: |
+#          echo "::error file=main.cpp,line=8::ESO Big Diffs"
+#          exit 1
