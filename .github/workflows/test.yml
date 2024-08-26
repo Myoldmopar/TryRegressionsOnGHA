@@ -55,7 +55,6 @@ jobs:
         run: ctest -C Release
 
       - name: Generate Regression Bundle
-        working-directory: ./build
         run: python build_regression_bundle.py
 
       - uses: vimtor/action-zip@v1.2
