@@ -38,7 +38,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.Python_REQUIRED_VERSION }}
 
       - name: Create Build Directory
         run: cmake -E make_directory ./build/
@@ -53,7 +56,6 @@ jobs:
 
       - name: Run Tests
         working-directory: ./build
-        id: test
         run: ctest -C Release
 
       - name: Generate Regression Bundle
@@ -75,7 +77,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "Diffs encountered on build ${{ matrix.os }}"
+              body: "Diffs encountered on GitHub action build ${{ matrix.os }}.\nSee https://github.com/Myoldmopar/TryRegressionsOnGHA/actions/runs/${{ github.run_id }}"
             })
 
       - name: Try a warning
