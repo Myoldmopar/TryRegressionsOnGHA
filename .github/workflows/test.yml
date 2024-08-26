@@ -67,10 +67,10 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            github.rest.commits.createComment({
-              commit_sha: context.commit.sha,
+            github.rest.repos.createCommitComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
+              commit_sha: context.issue.sha,
               body: "Diffs encountered on build ${{ matrix.os }}"
             })
 
