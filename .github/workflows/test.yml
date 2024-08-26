@@ -67,7 +67,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: "regressions-${{ matrix.os }}"
-          path: "${{ github.workspace }}/regressions-${{ matrix.os }}.zip"
+          path: "${{ github.workspace }}/build/regressions"
+          # path: "${{ github.workspace }}/regressions-${{ matrix.os }}.zip"
 
       - name: Try a warning
         if: ${{ matrix.os == 'windows-2019' }}
