@@ -62,12 +62,12 @@ jobs:
           files: ./build/regressions/
           dest: "regressions-${{ matrix.os }}.zip"
 
-      - uses: lhotari/action-upterm@v1
+#      - uses: lhotari/action-upterm@v1
 
       - uses: actions/upload-artifact@v4
         with:
           name: "regressions-${{ matrix.os }}"
-          path: "${{ github.workspace }}/build/regressions/regressions-${{ matrix.os }}.zip"
+          path: "${{ github.workspace }}/regressions-${{ matrix.os }}.zip"
 
       - name: Try a warning
         if: ${{ matrix.os == 'windows-2019' }}
