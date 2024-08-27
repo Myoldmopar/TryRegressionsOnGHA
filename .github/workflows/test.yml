@@ -64,8 +64,8 @@ jobs:
         run: python build_regression_bundle.py ${{ matrix.os }}
 
       - name: Generate Artifact Summary
-        if: always()
-        run: test -f ./build/summary.md && echo "$(cat ./build/summary.md)" >> $GITHUB_STEP_SUMMARY
+        if: always() && steps.regressions.outcome == 'failure'
+        run: echo "$(cat ./build/summary.md)" >> $GITHUB_STEP_SUMMARY
 
       - uses: actions/upload-artifact@v4
         id: upload_regressions
