@@ -65,7 +65,7 @@ jobs:
 
       - name: Generate Artifact Summary
         if: always() && steps.regressions.outcome == 'failure'
-        run: echo "$(cat ${{ github.workspace }}/build/summary.md)" >> $GITHUB_STEP_SUMMARY
+        run: echo "$(cat ./build/summary.md)" >> $GITHUB_STEP_SUMMARY
 
       - uses: actions/upload-artifact@v4
         id: upload_regressions
