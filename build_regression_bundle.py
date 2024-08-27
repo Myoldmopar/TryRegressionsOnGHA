@@ -10,3 +10,6 @@ if argv[1] == 'macos-14':
     exit(1)
 
 print("No regressions found, great!")
+
+with open('build/summary.md', 'w') as md:
+    md.write("# Markdown Summary\n\nThis is a great tool")
