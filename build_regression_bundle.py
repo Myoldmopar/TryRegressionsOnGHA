@@ -7,18 +7,13 @@ with open('build/regressions/index.html', 'w') as f:
 
 if argv[1] == 'macos-14':
     with open('build/summary.md', 'w') as md:
-        contents = """
+        contents = f"""
 <details>
-  <summary>ESO Diffs</summary>
-  - Foo
-  - Bar
-  - Baz
-</details>
+  <summary>Regressions in {argv[1]}</summary>
 
-<details>
-  <summary>EIO Diffs</summary>
-  - Hello
-  - World
+  - 8 ESO Diffs
+  - 9 Table Small Diffs
+  - 1 JSON Diffs
 </details>"""
         md.write(contents)
     print("Regressions encountered!  They will be uploaded as an artifact on GitHub Actions")
