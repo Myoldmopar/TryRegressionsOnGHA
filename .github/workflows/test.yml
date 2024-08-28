@@ -93,7 +93,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "# :warning: Regressions Detected\n\n ${{ GITHUB_STEP_SUMMARY }} \n\n - Build: ${{ matrix.os }}\n - [View Results](https://github.com/Myoldmopar/TryRegressionsOnGHA/actions/runs/${{ github.run_id }})\n - [Download Regressions](${{ steps.upload_regressions.outputs.artifact-url }})"
+              body: "# :warning: Regressions Detected\n\n $(echo "${{ steps.regressions.outputs.SUMMARY }}" | base64 --decode) \n\n - Build: ${{ matrix.os }}\n - [View Results](https://github.com/Myoldmopar/TryRegressionsOnGHA/actions/runs/${{ github.run_id }})\n - [Download Regressions](${{ steps.upload_regressions.outputs.artifact-url }})"
             })
 
       - name: Try a warning
