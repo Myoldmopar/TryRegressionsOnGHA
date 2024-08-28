@@ -70,7 +70,7 @@ jobs:
       - name: Store Summary in the Environment
         if: always() && steps.regressions.outcome == 'failure'
         shell: bash
-        run: echo "R_STUFF=$(cat ${{ github.workspace }}/regressions/summary.md)" >> $GITHUB_ENV
+        run: echo "R_STUFF=$(cat ./build/summary.md)" >> $GITHUB_ENV
 
       - uses: actions/upload-artifact@v4
         id: upload_regressions
