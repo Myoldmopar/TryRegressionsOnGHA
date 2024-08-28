@@ -20,3 +20,4 @@ if argv[1] == 'macos-14':
     exit(1)
 
 print("No regressions found, great!")
+
