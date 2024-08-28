@@ -61,6 +61,8 @@ jobs:
       - name: Generate Regression Bundle
         if: always()
         id: regressions
+        # steps.regressions.conclusion is always "success", but if no regressions, steps.regressions.outcome is "success"
+        continue-on-error: true
         run: |
           python build_regression_bundle.py ${{ matrix.os }}
           TEST_ENCODED=$(cat ./build/summary.md | base64)
@@ -89,12 +91,13 @@ jobs:
         if: always() && steps.regressions.outcome == 'failure'
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "# :warning: Regressions Detected\n\n ${{ steps.regressions.outputs.SUMMARY }} \n\n - Build: ${{ matrix.os }}\n - [View Results](https://github.com/Myoldmopar/TryRegressionsOnGHA/actions/runs/${{ github.run_id }})\n - [Download Regressions](${{ steps.upload_regressions.outputs.artifact-url }})"
-            })
+            console.log("${{ steps.regressions.outputs.SUMMARY }}")
+#            await github.rest.issues.createComment({
+#              issue_number: context.issue.number,
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              body: "# :warning: Regressions Detected\n\n ${{ steps.regressions.outputs.SUMMARY }} \n\n - Build: ${{ matrix.os }}\n - [View Results](https://github.com/Myoldmopar/TryRegressionsOnGHA/actions/runs/${{ github.run_id }})\n - [Download Regressions](${{ steps.upload_regressions.outputs.artifact-url }})"
+#            })
 
       - name: Try a warning
         if: always() && matrix.os == 'windows-2019'
