@@ -7,7 +7,7 @@ github.rest.issues.createComment({{
   issue_number: context.issue.number,
   owner: context.repo.owner,
   repo: context.repo.repo,
-  body: "{md_contents}"
+  body: `{md_contents}`
 }})
 """
     js.write(js_contents)

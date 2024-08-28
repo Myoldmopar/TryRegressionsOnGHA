@@ -86,12 +86,6 @@ jobs:
           script: |
             const script = require('${{ github.workspace }}/build/summary.js')
             console.log(script({github, context}))
-#            await github.rest.issues.createComment({
-#              issue_number: context.issue.number,
-#              owner: context.repo.owner,
-#              repo: context.repo.repo,
-#              body: "# :warning: Regressions Detected\n\n ${{ steps.regressions.outputs.SUMMARY }} \n\n - Build: ${{ matrix.os }}\n - [View Results](https://github.com/Myoldmopar/TryRegressionsOnGHA/actions/runs/${{ github.run_id }})\n - [Download Regressions](${{ steps.upload_regressions.outputs.artifact-url }})"
-#            })
 
       - name: Try a warning
         if: always() && matrix.os == 'windows-2019'
