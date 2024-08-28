@@ -63,11 +63,15 @@ jobs:
         id: regressions
         run: |
           python build_regression_bundle.py ${{ matrix.os }}
-          echo "SUMMARY=$(cat ./build/summary.md)" >> $GITHUB_OUTPUT
+          TEST_ENCODED=$(cat ./build/summary.md | base64)
+          echo "SUMMARY=$TEST_ENCODED" >> $GITHUB_OUTPUT
 
       - name: Generate Artifact Summary
         if: always() && steps.regressions.outcome == 'failure'
-        run: echo "${{ steps.regressions.outputs.SUMMARY }}" >> $GITHUB_STEP_SUMMARY
+        run: | 
+          ENCODED="${{ steps.regressions.outputs.SUMMARY }}"
+          THIS_SUMMARY=$(echo "$ENCODED" | base64 --decode)
+          echo $THIS_SUMMARY >> $GITHUB_STEP_SUMMARY
 
 #      - name: Store Summary in the Environment
 #        if: always() && steps.regressions.outcome == 'failure'
@@ -89,7 +93,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "# :warning: Regressions Detected\n\n ${{ steps.regressions.outputs.SUMMARY }} \n\n - Build: ${{ matrix.os }}\n - [View Results](https://github.com/Myoldmopar/TryRegressionsOnGHA/actions/runs/${{ github.run_id }})\n - [Download Regressions](${{ steps.upload_regressions.outputs.artifact-url }})"
+              body: "# :warning: Regressions Detected\n\n ${{ GITHUB_STEP_SUMMARY }} \n\n - Build: ${{ matrix.os }}\n - [View Results](https://github.com/Myoldmopar/TryRegressionsOnGHA/actions/runs/${{ github.run_id }})\n - [Download Regressions](${{ steps.upload_regressions.outputs.artifact-url }})"
             })
 
       - name: Try a warning
