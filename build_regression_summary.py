@@ -8,6 +8,6 @@ github.rest.issues.createComment({{
   owner: context.repo.owner,
   repo: context.repo.repo,
   body: "{md_contents}"
-}})        
+}})
 """
     js.write(js_contents)

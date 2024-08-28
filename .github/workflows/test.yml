@@ -76,6 +76,10 @@ jobs:
         if: always() && steps.regressions.outcome == 'failure'
         run: python build_regression_summary.py ${{ matrix.os }} ${{ github.run_id }} ${{ steps.upload_regressions.outputs.artifact-url }}
 
+      - name: Print contents of JS script
+        if: always() && steps.regressions.outcome == 'failure'
+        run: cat ${{ github.workspace }}/build/summary.js
+
       - uses: actions/github-script@v7
         if: always() && steps.regressions.outcome == 'failure'
         with:
