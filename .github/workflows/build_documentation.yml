@@ -20,6 +20,8 @@ jobs:
     steps:
     - name: Checkout EnergyPlus
       uses: actions/checkout@v4
+      with:
+        repository: 'NREL/EnergyPlus'
 
     - name: Set up Python 3.12
       uses: actions/setup-python@v5
