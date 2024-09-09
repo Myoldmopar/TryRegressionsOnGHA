@@ -31,9 +31,7 @@ jobs:
         run: cmake --build . -j 4 --config Release --target PACKAGE
 
       - uses: actions/upload-artifact@v4
-        id: upload_regressions
-        if: always() && steps.regressions.outcome == 'failure'
         with:
-          name: "regressions-${{ matrix.os }}"
+          name: "package-windows"
           path: "${{ github.workspace }}/build"
 
