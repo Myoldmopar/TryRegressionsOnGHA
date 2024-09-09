@@ -45,7 +45,7 @@ jobs:
     - name: Build Docs
       working-directory: ./doc/build
       run: cmake --build . -j 4
-
+`
     - name: Upload Acknowledgments
       uses: actions/upload-artifact@v4
       with:
@@ -130,7 +130,7 @@ jobs:
       with:
         name: AllDocumentation
         path: ${{ github.workspace }}/doc/build/pdf/
-
+`
     - name: Upload log folder upon failure
       if: failure() && runner.os == 'Windows'
       uses: actions/upload-artifact@v4
